@@ -26,10 +26,8 @@
     color: var(--text);
     font-family: var(--sans);
   }
-  body{
-    display:flex; justify-content:center; padding: 48px 20px 80px;
-  }
-  .wrap{ width: 100%; max-width: 640px; }
+  body{ display:flex; justify-content:center; padding: 48px 20px 80px; }
+  .wrap{ width: 100%; max-width: 760px; }
 
   .eyebrow{
     font-family: var(--mono); font-size: 12px; letter-spacing: .18em;
@@ -40,29 +38,20 @@
     content:""; width:7px; height:7px; border-radius:50%; background: var(--cyan);
     box-shadow: 0 0 8px var(--cyan); display:inline-block;
   }
-  h1{
-    font-size: 28px; line-height:1.25; margin: 0 0 6px; font-weight: 650;
-    letter-spacing: -0.01em;
-  }
-  .sub{ color: var(--dim); font-size: 14.5px; margin: 0 0 28px; max-width: 480px; }
+  h1{ font-size: 28px; line-height:1.25; margin: 0 0 6px; font-weight: 650; letter-spacing: -0.01em; }
+  .sub{ color: var(--dim); font-size: 14.5px; margin: 0 0 28px; max-width: 560px; }
 
-  .panel{
+  .controlpanel{
     background: linear-gradient(180deg, var(--panel-2), var(--panel));
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 22px;
-    position: relative;
-    overflow: hidden;
+    border: 1px solid var(--line); border-radius: 14px; padding: 22px;
+    position: relative; overflow: hidden; margin-bottom: 20px;
   }
-  .panel::before{ /* faint grid backdrop, the recurring scan-grid motif */
-    content:"";
-    position:absolute; inset:0;
+  .controlpanel::before{
+    content:""; position:absolute; inset:0;
     background-image:
       linear-gradient(var(--line) 1px, transparent 1px),
       linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 26px 26px;
-    opacity: .18;
-    pointer-events:none;
+    background-size: 26px 26px; opacity: .18; pointer-events:none;
   }
 
   .row{ display:flex; gap:10px; position:relative; z-index:1; }
@@ -91,63 +80,78 @@
     letter-spacing: .04em; user-select:none;
   }
   .advanced[open] summary{ color: var(--cyan); }
-  .advanced .key-row{ margin-top: 10px; display:flex; gap:10px; }
-  .advanced input{
-    flex:1; background: #0b1216; border: 1px solid var(--line); color: var(--text);
+  .keyfield{ margin-top: 12px; }
+  .keyfield label{
+    display:block; font-family: var(--mono); font-size: 11px; color: var(--dim);
+    letter-spacing: .04em; margin-bottom: 6px;
+  }
+  .keyfield input{
+    width:100%; background: #0b1216; border: 1px solid var(--line); color: var(--text);
     font-family: var(--mono); font-size: 13px; padding: 10px 12px; border-radius: 8px; outline:none;
   }
-  .advanced p{ font-size: 12px; color: var(--dim); line-height:1.6; margin: 10px 0 0; }
+  .keyfield p{ font-size: 12px; color: var(--dim); line-height:1.6; margin: 8px 0 0; }
   .advanced a{ color: var(--cyan); text-decoration:none; border-bottom: 1px dotted var(--cyan); }
 
-  /* scan sweep, plays while a check is in flight */
   .scanline{
     position:absolute; left:0; right:0; top:0; height: 2px;
     background: linear-gradient(90deg, transparent, var(--cyan), transparent);
     opacity:0; pointer-events:none;
   }
   .scanline.active{ animation: sweep 1.1s linear infinite; opacity:1; }
-  @keyframes sweep{
-    from{ transform: translateY(0); }
-    to{ transform: translateY(220px); }
-  }
+  @keyframes sweep{ from{ transform: translateY(0); } to{ transform: translateY(220px); } }
 
-  .report{ margin-top: 18px; position:relative; z-index:1; display:none; }
-  .report.show{ display:block; }
+  .results{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  @media (max-width: 620px){ .results{ grid-template-columns: 1fr; } }
+
+  .card{
+    background: linear-gradient(180deg, var(--panel-2), var(--panel));
+    border: 1px solid var(--line); border-radius: 14px; padding: 18px;
+    display:none;
+  }
+  .card.show{ display:block; }
+  .source-label{
+    font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 12px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .source-label .src-name{ color: var(--text); }
 
   .verdict{
-    display:flex; align-items:center; gap:14px;
-    border: 1px solid var(--line); border-radius: 10px; padding: 16px;
+    display:flex; align-items:center; gap:12px;
+    border: 1px solid var(--line); border-radius: 10px; padding: 14px;
     margin-bottom: 14px; background: #0b1216;
   }
   .stamp{
-    font-family: var(--mono); font-weight: 800; font-size: 12px; letter-spacing: .1em;
-    padding: 7px 12px; border-radius: 6px; border: 2px solid currentColor;
+    font-family: var(--mono); font-weight: 800; font-size: 11.5px; letter-spacing: .08em;
+    padding: 6px 10px; border-radius: 6px; border: 2px solid currentColor;
     transform: rotate(-3deg); white-space: nowrap;
   }
   .stamp.clean{ color: var(--green); }
   .stamp.flagged{ color: var(--red); }
   .stamp.unsure{ color: var(--amber); }
-  .verdict-text{ font-size: 13.5px; color: var(--dim); line-height:1.5; }
+  .verdict-text{ font-size: 13px; color: var(--dim); line-height:1.5; }
   .verdict-text b{ color: var(--text); font-weight: 600; }
 
-  .fields{
-    display:grid; grid-template-columns: 120px 1fr; gap: 9px 14px;
-    font-family: var(--mono); font-size: 13px;
-  }
+  .fields{ display:grid; grid-template-columns: 90px 1fr; gap: 8px 12px; font-family: var(--mono); font-size: 12.5px; }
   .fields dt{ color: var(--dim); }
   .fields dd{ margin:0; color: var(--text); word-break: break-word; }
 
-  .error{
+  .card .error{
+    font-size: 12.5px; color: var(--amber); line-height: 1.6;
+    border-left: 2px solid var(--amber); padding: 10px 12px; background: rgba(255,180,84,.06);
+    border-radius: 0 8px 8px 0;
+  }
+  .card .placeholder{ font-size: 12.5px; color: var(--dim); font-family: var(--mono); }
+
+  .global-error{
     margin-top: 14px; font-size: 13px; color: var(--amber); line-height: 1.6;
     border-left: 2px solid var(--amber); padding: 10px 14px; background: rgba(255,180,84,.06);
     border-radius: 0 8px 8px 0; display:none; position:relative; z-index:1;
   }
-  .error.show{ display:block; }
-  .error a{ color: var(--cyan); }
+  .global-error.show{ display:block; }
 
-  .footnote{
-    margin-top: 22px; font-size: 12px; color: var(--dim); line-height: 1.7;
-  }
+  .footnote{ margin-top: 22px; font-size: 12px; color: var(--dim); line-height: 1.7; }
 </style>
 </head>
 <body>
@@ -155,9 +159,9 @@
 
   <div class="eyebrow">IP Recon</div>
   <h1>Is dit IP-adres aan een VPN te koppelen?</h1>
-  <p class="sub">Voer een IPv4- of IPv6-adres in. De check vraagt live op of het adres bekendstaat als VPN, proxy of datacenter-uitgang.</p>
+  <p class="sub">Voer een IPv4- of IPv6-adres in. De check vraagt gelijktijdig twee onafhankelijke databases live op, omdat geen enkele bron volledig is.</p>
 
-  <div class="panel">
+  <div class="controlpanel">
     <div class="scanline" id="scanline"></div>
 
     <div class="row">
@@ -166,42 +170,63 @@
     </div>
 
     <details class="advanced">
-      <summary>Eigen API-key gebruiken (aanbevolen)</summary>
-      <div class="key-row">
-        <input type="text" id="apiKey" placeholder="proxycheck.io API-key (optioneel)">
+      <summary>Eigen API-keys gebruiken (aanbevolen)</summary>
+
+      <div class="keyfield">
+        <label>proxycheck.io API-key</label>
+        <input type="text" id="keyProxycheck" placeholder="optioneel">
+        <p>
+          Gratis account op <a href="https://proxycheck.io/" target="_blank" rel="noopener">proxycheck.io</a>.
+          Zet het domein waarop je deze pagina opent vrij onder de CORS-instelling in je dashboard
+          (bare domein, zonder <code>https://</code> of slash erachter).
+        </p>
       </div>
-      <p>
-        Zonder eigen key wordt anoniem gequeryd, wat door browserbeveiliging (CORS) soms wordt geblokkeerd.
-        Een gratis key via <a href="https://proxycheck.io/" target="_blank" rel="noopener">proxycheck.io</a> werkt betrouwbaarder —
-        zet hierin bij "CORS Settings" het domein vrij waarop je deze pagina opent. De key blijft alleen in dit tabblad
-        en wordt niet opgeslagen.
-      </p>
+
+      <div class="keyfield">
+        <label>vpnapi.io API-key</label>
+        <input type="text" id="keyVpnapi" placeholder="optioneel">
+        <p>
+          Gratis account op <a href="https://vpnapi.io/" target="_blank" rel="noopener">vpnapi.io</a> (1.000 checks/dag).
+          Let op: vpnapi.io adviseert zelf om de key niet client-side te gebruiken — iedereen die de paginabron bekijkt
+          kan 'm zien en jouw daglimiet verbruiken. Voor een privétool is dat meestal geen probleem.
+        </p>
+      </div>
+
+      <p>Beide keys blijven alleen in dit browsertabblad en worden nergens opgeslagen.</p>
     </details>
 
-    <div class="report" id="report">
-      <div class="verdict" id="verdict"></div>
-      <dl class="fields" id="fields"></dl>
-    </div>
+    <div class="global-error" id="globalError"></div>
+  </div>
 
-    <div class="error" id="error"></div>
+  <div class="results">
+    <div class="card" id="cardProxycheck">
+      <div class="source-label"><span class="src-name">proxycheck.io</span><span>v2 API</span></div>
+      <div class="cardbody"></div>
+    </div>
+    <div class="card" id="cardVpnapi">
+      <div class="source-label"><span class="src-name">vpnapi.io</span><span>security API</span></div>
+      <div class="cardbody"></div>
+    </div>
   </div>
 
   <p class="footnote">
-    Geen enkele check is 100% sluitend — providers wisselen IP's en sommige VPN's gebruiken bewust residentiële adressen
-    die niet als VPN herkenbaar zijn. Zie dit als een indicatie, niet als bewijs.
+    Geen enkele check is 100% sluitend — providers wisselen IP's en sommige VPN's gebruiken bewust residentiële
+    adressen die niet als VPN herkenbaar zijn. Twee bronnen die elkaar tegenspreken is normaal; zie het als een
+    indicatie, niet als bewijs.
   </p>
 
 </div>
 
 <script>
 const ipInput = document.getElementById('ipInput');
-const apiKey = document.getElementById('apiKey');
+const keyProxycheck = document.getElementById('keyProxycheck');
+const keyVpnapi = document.getElementById('keyVpnapi');
 const checkBtn = document.getElementById('checkBtn');
 const scanline = document.getElementById('scanline');
-const report = document.getElementById('report');
-const verdictEl = document.getElementById('verdict');
-const fieldsEl = document.getElementById('fields');
-const errorEl = document.getElementById('error');
+const globalError = document.getElementById('globalError');
+
+const cardProxycheck = document.getElementById('cardProxycheck');
+const cardVpnapi = document.getElementById('cardVpnapi');
 
 function isValidIP(value){
   const v4 = /^(\d{1,3}\.){3}\d{1,3}$/;
@@ -218,93 +243,163 @@ function setLoading(loading){
   scanline.classList.toggle('active', loading);
 }
 
-function showError(html){
-  errorEl.innerHTML = html;
-  errorEl.classList.add('show');
+function showGlobalError(html){
+  globalError.innerHTML = html;
+  globalError.classList.add('show');
 }
-function clearError(){
-  errorEl.classList.remove('show');
-  errorEl.innerHTML = '';
-}
-
-function renderVerdict(kind, title, detail){
-  const cls = kind === 'flagged' ? 'flagged' : kind === 'clean' ? 'clean' : 'unsure';
-  verdictEl.innerHTML = `
-    <div class="stamp ${cls}">${title}</div>
-    <div class="verdict-text">${detail}</div>
-  `;
+function clearGlobalError(){
+  globalError.classList.remove('show');
+  globalError.innerHTML = '';
 }
 
 function field(dt, dd){
-  return `<dt>${dt}</dt><dd>${dd || '—'}</dd>`;
+  return `<dt>${dt}</dt><dd>${dd === undefined || dd === null || dd === '' ? '—' : dd}</dd>`;
 }
 
-async function runCheck(){
-  clearError();
-  report.classList.remove('show');
+function verdictHtml(kind, title, detail){
+  const cls = kind === 'flagged' ? 'flagged' : kind === 'clean' ? 'clean' : 'unsure';
+  return `
+    <div class="verdict">
+      <div class="stamp ${cls}">${title}</div>
+      <div class="verdict-text">${detail}</div>
+    </div>
+  `;
+}
 
-  const ip = ipInput.value.trim();
-  if(!isValidIP(ip)){
-    showError('Dat ziet er niet uit als een geldig IPv4- of IPv6-adres.');
-    return;
-  }
+function renderCardLoading(card){
+  card.classList.add('show');
+  card.querySelector('.cardbody').innerHTML = `<p class="placeholder">scannen…</p>`;
+}
+function renderCardError(card, msg, extra){
+  card.classList.add('show');
+  card.querySelector('.cardbody').innerHTML = `<div class="error">${msg}${extra ? ' ' + extra : ''}</div>`;
+}
+function renderCardBody(card, html){
+  card.classList.add('show');
+  card.querySelector('.cardbody').innerHTML = html;
+}
 
-  setLoading(true);
-
-  const key = apiKey.value.trim();
+// ---- proxycheck.io ----
+async function checkProxycheck(ip){
+  renderCardLoading(cardProxycheck);
+  const key = keyProxycheck.value.trim();
   const params = new URLSearchParams({ vpn: '1', asn: '1', risk: '1' });
   if(key) params.set('key', key);
   const url = `https://proxycheck.io/v2/${encodeURIComponent(ip)}?${params.toString()}`;
 
   try{
-    const res = await fetch(url, { method: 'GET' });
+    const res = await fetch(url);
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-
     if(data.status !== 'ok' && data.status !== 'warning'){
-      throw new Error(data.message || 'Onbekende fout van de check-service.');
+      throw new Error(data.message || 'Onbekende fout.');
     }
-
     const info = data[ip] || data[Object.keys(data).find(k => k.toLowerCase() === ip.toLowerCase())];
-    if(!info){
-      throw new Error('Geen gegevens ontvangen voor dit adres.');
-    }
+    if(!info) throw new Error('Geen gegevens ontvangen voor dit adres.');
 
     const isProxy = info.proxy === 'yes';
     const type = (info.type || '').toUpperCase();
     const isVpn = type === 'VPN';
     const risk = info.risk;
 
+    let verdict;
     if(isProxy && isVpn){
-      renderVerdict('flagged', 'VPN GEDETECTEERD', `Dit adres staat geregistreerd als <b>VPN-uitgang</b>${info.provider ? ` van <b>${info.provider}</b>` : ''}.`);
+      verdict = verdictHtml('flagged', 'VPN GEDETECTEERD', `Geregistreerd als <b>VPN-uitgang</b>${info.provider ? ` van <b>${info.provider}</b>` : ''}.`);
     } else if(isProxy){
-      renderVerdict('flagged', 'PROXY GEDETECTEERD', `Dit adres is geen herkende VPN, maar wel een <b>${type || 'proxy/anonimiseringsdienst'}</b>.`);
+      verdict = verdictHtml('flagged', 'PROXY GEDETECTEERD', `Geen herkende VPN, maar wel een <b>${type || 'proxy/anonimiseringsdienst'}</b>.`);
     } else {
-      renderVerdict('clean', 'GEEN VPN GEVONDEN', 'Dit adres komt niet voor in de bekende VPN/proxy-database op het moment van checken.');
+      verdict = verdictHtml('clean', 'GEEN VPN GEVONDEN', 'Niet aangetroffen in de bekende VPN/proxy-database.');
     }
 
-    fieldsEl.innerHTML = [
-      field('IP', ip),
+    const fields = `<dl class="fields">${[
       field('Type', info.type || 'onbekend'),
       field('Provider', info.provider),
       field('ASN', info.asn),
-      field('Organisatie', info.organisation),
       field('Land', info.country),
-      risk !== undefined ? field('Risicoscore', `${risk} / 100`) : ''
-    ].join('');
+      risk !== undefined ? field('Risico', `${risk} / 100`) : ''
+    ].join('')}</dl>`;
 
-    report.classList.add('show');
+    renderCardBody(cardProxycheck, verdict + fields);
 
   } catch(err){
     const msg = String(err.message || err);
     let extra = '';
     if(msg.toLowerCase().includes('fetch') || msg.toLowerCase().includes('failed')){
-      extra = ' Dit komt vaak doordat de service het verzoek zonder geregistreerde herkomst blokkeert (CORS). Vul hierboven een eigen gratis API-key in en zet het domein van deze pagina vrij in je proxycheck.io-dashboard.';
+      extra = 'Mogelijk geblokkeerd door CORS — vul een eigen API-key in en whitelist je domein bij proxycheck.io.';
     }
-    showError(`Kon geen resultaat ophalen: ${msg}.${extra}`);
-  } finally {
-    setLoading(false);
+    renderCardError(cardProxycheck, `Geen resultaat: ${msg}`, extra);
   }
+}
+
+// ---- vpnapi.io ----
+async function checkVpnapi(ip){
+  renderCardLoading(cardVpnapi);
+  const key = keyVpnapi.value.trim();
+  if(!key){
+    renderCardError(cardVpnapi, 'Geen API-key ingevuld.', 'vpnapi.io vereist altijd een (gratis) key, ook voor losse checks. Vul deze in bij "Eigen API-keys gebruiken".');
+    return;
+  }
+  const url = `https://vpnapi.io/api/${encodeURIComponent(ip)}?key=${encodeURIComponent(key)}`;
+
+  try{
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if(!data.security){
+      throw new Error(data.message || 'Onverwacht antwoord van de API.');
+    }
+
+    const sec = data.security;
+    let verdict;
+    if(sec.vpn){
+      verdict = verdictHtml('flagged', 'VPN GEDETECTEERD', 'Geregistreerd als <b>VPN-uitgang</b>.');
+    } else if(sec.proxy){
+      verdict = verdictHtml('flagged', 'PROXY GEDETECTEERD', 'Geen herkende VPN, maar wel een <b>open proxy</b>.');
+    } else if(sec.tor){
+      verdict = verdictHtml('flagged', 'TOR-NODE GEDETECTEERD', 'Dit adres is een <b>Tor-exitnode</b>.');
+    } else if(sec.relay){
+      verdict = verdictHtml('unsure', 'PRIVATE RELAY', 'Dit adres hoort bij een <b>private relay</b>-dienst (bv. iCloud Private Relay).');
+    } else {
+      verdict = verdictHtml('clean', 'GEEN VPN GEVONDEN', 'Niet aangetroffen als VPN, proxy, Tor of relay.');
+    }
+
+    const net = data.network || {};
+    const loc = data.location || {};
+    const fields = `<dl class="fields">${[
+      field('ASN', net.autonomous_system_number),
+      field('Organisatie', net.autonomous_system_organization),
+      field('Land', loc.country),
+      field('Tor', sec.tor ? 'ja' : 'nee'),
+      field('Relay', sec.relay ? 'ja' : 'nee')
+    ].join('')}</dl>`;
+
+    renderCardBody(cardVpnapi, verdict + fields);
+
+  } catch(err){
+    const msg = String(err.message || err);
+    let extra = '';
+    if(msg.toLowerCase().includes('fetch') || msg.toLowerCase().includes('failed')){
+      extra = 'Mogelijk geblokkeerd of de key is ongeldig — controleer je vpnapi.io-key.';
+    }
+    renderCardError(cardVpnapi, `Geen resultaat: ${msg}`, extra);
+  }
+}
+
+async function runCheck(){
+  clearGlobalError();
+
+  const ip = ipInput.value.trim();
+  if(!isValidIP(ip)){
+    showGlobalError('Dat ziet er niet uit als een geldig IPv4- of IPv6-adres.');
+    return;
+  }
+
+  setLoading(true);
+  await Promise.allSettled([
+    checkProxycheck(ip),
+    checkVpnapi(ip)
+  ]);
+  setLoading(false);
 }
 
 checkBtn.addEventListener('click', runCheck);
